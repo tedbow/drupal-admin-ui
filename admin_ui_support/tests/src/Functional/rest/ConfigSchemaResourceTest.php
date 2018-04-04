@@ -74,8 +74,9 @@ class ConfigSchemaResourceTest extends ResourceTestBase {
     $url = Url::fromRoute('rest.config_schema.GET', ['_format' => static::$format, 'name' => 'system.site']);
     $request_options = $this->getAuthenticationRequestOptions('GET');
 
+    $this->setUpAuthorization('GET');
     $response = $this->request('GET', $url, $request_options);
-    $this->assertResourceResponse(200, false, $response, ['config:rest.resource.config_schema', 'config:rest.settings', 'http_response'], [], FALSE, 'MISS');
+    $this->assertResourceResponse(200, false, $response, ['config:rest.resource.config_schema', 'config:rest.settings', 'http_response'], ['user.permissions'], FALSE, 'MISS');
     $result_config_schema = json::decode((string) $response->getBody());
 
     $expected_config_schema = \Drupal::service('config.typed')->getDefinition('system.site');
@@ -88,6 +89,7 @@ class ConfigSchemaResourceTest extends ResourceTestBase {
   protected function setUpAuthorization($method) {
     switch ($method) {
       case 'GET':
+        $this->grantPermissionsToTestedRole(['restful get config_schema']);
         break;
 
       default:
