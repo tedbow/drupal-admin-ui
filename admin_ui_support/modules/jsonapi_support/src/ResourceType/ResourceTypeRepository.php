@@ -37,6 +37,11 @@ class ResourceTypeRepository extends JsonApiResourceTypeRepository {
           $entity_type->isInternal()
         );
         $relatable_resource_types = $this->calculateRelatableResourceTypes($resource_type);
+        if ($resource_type->getEntityTypeId() === 'taxonomy_term') {
+          // Tags can only have parent of the same bundle so don't include this
+          // relationship.
+          unset($relatable_resource_types['parent']);
+        }
         $resource_type->setRelatableResourceTypes($relatable_resource_types);
         $this->all[] = $resource_type;
       }
