@@ -55,13 +55,14 @@ class ResourceTypeRepository extends JsonApiResourceTypeRepository {
   public function get($entity_type_id, $bundle) {
     // Handle requests where the bundle is not provided.
     // @see \Drupal\jsonapi_support\ResourceType\CrossBundlesResourceType::getBundle()
-    if (!empty($entity_type_id) && $bundle === NULL) {
+    if (!empty($entity_type_id) && empty($bundle)) {
       foreach ($this->all() as $resource) {
         // Only handle CrossBundlesResourceType resources in this method.
         if ($resource instanceof CrossBundlesResourceType && $resource->getEntityTypeId() == $entity_type_id) {
           return $resource;
         }
       }
+      return NULL;
     }
     // Let the parent class handle all other requests.
     return parent::get($entity_type_id, $bundle);
