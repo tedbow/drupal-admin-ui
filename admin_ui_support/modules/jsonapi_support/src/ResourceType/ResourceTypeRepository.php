@@ -34,7 +34,7 @@ class ResourceTypeRepository extends JsonApiResourceTypeRepository {
           $entity_type_id,
           $entity_type_id,
           $entity_type->getClass(),
-          static::shouldBeInternalResourceType($entity_type)
+          $entity_type->isInternal()
         );
         $relatable_resource_types = $this->calculateRelatableResourceTypes($resource_type);
         $resource_type->setRelatableResourceTypes($relatable_resource_types);
@@ -42,6 +42,24 @@ class ResourceTypeRepository extends JsonApiResourceTypeRepository {
       }
     }
     return $this->all;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function get($entity_type_id, $bundle) {
+    // Handle requests where the bundle is not provided.
+    // @see \Drupal\jsonapi_support\ResourceType\CrossBundlesResourceType::getBundle()
+    if (!empty($entity_type_id) && $bundle === NULL) {
+      foreach ($this->all() as $resource) {
+        // Only handle CrossBundlesResourceType resources in this method.
+        if ($resource instanceof CrossBundlesResourceType && $resource->getEntityTypeId() == $entity_type_id) {
+          return $resource;
+        }
+      }
+    }
+    // Let the parent class handle all other requests.
+    return parent::get($entity_type_id, $bundle);
   }
 
 }
