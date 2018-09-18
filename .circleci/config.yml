@@ -75,7 +75,7 @@ jobs:
                 mv project drupal-admin-ui-demo/drupal-admin-ui
                 cd drupal-admin-ui-demo
                 composer config repositories.repo-name path "~/drupal-admin-ui-demo/drupal-admin-ui/admin_ui_support"
-                composer require justafish/drupal-admin-ui-support:dev-$CIRCLE_BRANCH
+                composer require justafish/drupal-admin-ui-support:dev-$CIRCLE_BRANCH --no-update
                 composer install
                 composer setup
         - save_cache:
