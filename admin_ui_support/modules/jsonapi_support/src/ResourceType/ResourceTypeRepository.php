@@ -34,7 +34,9 @@ class ResourceTypeRepository extends JsonApiResourceTypeRepository {
           $entity_type_id,
           $entity_type_id,
           $entity_type->getClass(),
-          $entity_type->isInternal()
+          $entity_type->isInternal(),
+          TRUE,
+          FALSE
         );
         $relatable_resource_types = $this->calculateRelatableResourceTypes($resource_type);
         if ($resource_type->getEntityTypeId() === 'taxonomy_term') {
