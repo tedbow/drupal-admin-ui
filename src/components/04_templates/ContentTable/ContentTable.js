@@ -60,13 +60,15 @@ class ContentTable extends React.Component {
   selectAll(checked) {
     this.props.setChecked(
       (checked &&
-        this.props.contentList.map(({ attributes: { nid } }) => nid).reduce(
-          (acc, cur) => ({
-            ...acc,
-            [cur]: true,
-          }),
-          {},
-        )) ||
+        this.props.contentList
+          .map(({ attributes: { drupal_internal__nid: nid } }) => nid)
+          .reduce(
+            (acc, cur) => ({
+              ...acc,
+              [cur]: true,
+            }),
+            {},
+          )) ||
         {},
     );
   }
@@ -152,7 +154,12 @@ class ContentTable extends React.Component {
             {this.props.contentList.map(node => {
               const {
                 type,
-                attributes: { changed, nid, status, title },
+                attributes: {
+                  changed,
+                  drupal_internal__nid: nid,
+                  status,
+                  title,
+                },
                 relationships,
               } = node;
               const rowSelectId = `row-select-for-${String(nid)}`;
@@ -194,7 +201,7 @@ class ContentTable extends React.Component {
                           to={`/user/${
                             this.props.includes['user--user'][
                               relationships.uid.data.id
-                            ].attributes.uid
+                            ].attributes.drupal_internal__uid
                           }`}
                         >
                           {
@@ -219,7 +226,7 @@ class ContentTable extends React.Component {
                       day: 'numeric',
                       hour: 'numeric',
                       minute: 'numeric',
-                    }).format(new Date(changed * 1000))}
+                    }).format(new Date(changed))}
                   </TableCell>
                   <TableCell style={{ whiteSpace: 'nowrap' }}>
                     <IconButton
