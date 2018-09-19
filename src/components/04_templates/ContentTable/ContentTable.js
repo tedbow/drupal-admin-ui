@@ -201,7 +201,7 @@ class ContentTable extends React.Component {
                           to={`/user/${
                             this.props.includes['user--user'][
                               relationships.uid.data.id
-                            ].attributes.uid
+                            ].attributes.drupal_internal__uid
                           }`}
                         >
                           {
