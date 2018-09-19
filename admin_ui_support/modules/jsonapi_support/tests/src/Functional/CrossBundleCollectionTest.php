@@ -168,7 +168,7 @@ class CrossBundleCollectionTest extends BrowserTestBase {
     $this->assertEquals('405', $response->getStatusCode());
     foreach (['POST', 'PATCH', 'DELETE'] as $method) {
       $response = $this->httpClient->request($method, 'jsonapi/node/' . Node::load(1)->uuid(), $request_options);
-      $this->assertEquals('404', $response->getStatusCode());
+      $this->assertEquals('405', $response->getStatusCode());
     }
   }
 
