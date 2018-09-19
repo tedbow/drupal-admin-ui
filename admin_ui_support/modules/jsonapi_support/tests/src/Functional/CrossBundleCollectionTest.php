@@ -142,7 +142,7 @@ class CrossBundleCollectionTest extends BrowserTestBase {
       $this->getDataTitles($data)
     );
     $node_uid_uuid = $data[0]['relationships']['uid']['data']['id'];
-    $included_uuid = $json_response['included'][0]['attributes']['uuid'];
+    $included_uuid = $json_response['included'][0]['id'];
     $this->assertEquals($node_uid_uuid, $included_uuid);
 
     // Ensure that "sort" works in query.
